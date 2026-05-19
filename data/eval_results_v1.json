@@ -1,0 +1,437 @@
+[
+  {
+    "incident_id": "INC-001",
+    "prompt_version": "v1",
+    "generated_summary": "**Incident Overview**\n\nOn March 12, 2025, a fairness audit found that the CreditScore-ML v4.2 loan approval system was denying loan applications from Hispanic applicants at a rate 23% higher than similar non-Hispanic applicants with the same credit qualifications. This system had been making automated loan decisions for 11 months without fairness checks. Affected applicants did not know a computer made their loan decision and had no way to appeal. The incident is rated **Critical** severity.\n\n**Root Cause**\n\nThe system learned from 15 years of old loan data that contained patterns from past discriminatory lending practices. The model used zip code and employment sector information as decision factors. These factors acted as stand-ins for race, causing the system to reproduce historical bias. No fairness testing was done before the system went live.\n\n**Remediation Steps**\n\n1. Stop using the model for new applications immediately; send loan decisions to human reviewers instead\n2. Review all loan decisions made during the 11-month period to identify affected applicants\n3. Rebuild the model using corrected data with zip code and employment sector either removed or adjusted to prevent bias\n4. Require fairness testing every three months before any future model can be used for loan decisions\n\n**Risk Assessment**\n\nThis incident creates significant legal risk under fair lending laws that prohibit discrimination in credit decisions. The organization faces potential regulatory penalties, lawsuits from affected applicants, and reputational damage. Operational impact includes processing delays while human underwriters handle the workload and costs associated with retrospective case review.",
+    "scores": {
+      "C1": {
+        "result": "pass",
+        "justification": "All verifiable facts match the source record: system name (CreditScore-ML v4.2), date (March 12, 2025), 23% disparity rate, 11-month production period, Hispanic applicants as affected group, and Critical severity rating are accurately stated."
+      },
+      "C2": {
+        "result": "pass",
+        "justification": "The root cause is explicitly traced to its origin: training on 15-year historical data containing discriminatory patterns, with zip code and employment sector acting as proxy features for race, plus absence of pre-deployment fairness testing."
+      },
+      "C3": {
+        "result": "pass",
+        "justification": "Four distinct remediation actions are described with sufficient specificity (suspend model/route to humans, retrospective review, retrain with adjusted features, quarterly fairness audits), including both immediate containment and recurrence prevention measures."
+      },
+      "C4": {
+        "result": "fail",
+        "justification": "The summary introduces a 'Risk Assessment' section with speculative legal and operational impacts (regulatory penalties, lawsuits, reputational damage, processing delays, costs) that are not present in the source incident record, which constitutes editorializing beyond the documented facts."
+      },
+      "C5": {
+        "result": "fail",
+        "justification": "The Risk Assessment section asserts undocumented potential harms including 'regulatory penalties,' 'lawsuits from affected applicants,' 'reputational damage,' and 'operational impact includes processing delays' that are not stated or directly supported by the incident record."
+      }
+    },
+    "overall_pass": false,
+    "timestamp": "2026-05-19T20:08:45.752422+00:00"
+  },
+  {
+    "incident_id": "INC-002",
+    "prompt_version": "v1",
+    "generated_summary": "**Incident Overview**\n\nThe RadAssist-DX 2.1 system, which helps prioritize chest X-rays for radiologist review, experienced a significant performance problem at three hospital sites starting January 8, 2025. After an upgrade to the Picture Archiving and Communication System (PACS\u2014the software that stores and manages medical images), the AI model's confidence scores dropped sharply from a typical 0.87 to 0.41. This caused the system to flag nearly every scan as urgent, overwhelming radiologists and eliminating the tool's ability to prioritize cases. The disruption lasted six days. No patients received incorrect diagnoses because radiologists review all scans regardless of AI output. This incident is classified as High severity.\n\n**Root Cause**\n\nThe PACS upgrade changed how technical information about image quality (pixel spacing and resolution) was encoded in the medical image files. The AI model's preprocessing system received unfamiliar data values it had never seen during training, causing it to produce unreliable confidence scores. The model itself was not broken\u2014it simply could not interpret the changed format of incoming data.\n\n**Remediation Steps**\n\n1. Temporarily restore the previous PACS integration settings while developing a permanent solution\n2. Install automated monitoring that alerts the team when incoming image data differs significantly from expected patterns\n3. Create mandatory testing procedures to validate AI model inputs before any future PACS or infrastructure upgrades\n4. Document all technical dependencies and require vendor approval before making changes to systems that affect medical imaging\n\n**Risk Assessment**\n\nThis incident caused operational disruption by reducing workflow efficiency for six days. While no patient harm occurred, continued reliance on degraded AI tools could erode clinician trust and reduce adoption of beneficial technology. Future similar incidents could create liability exposure if workflow disruptions delay urgent case identification.",
+    "scores": {
+      "C1": {
+        "result": "pass",
+        "justification": "All verifiable facts match the source record: system name (RadAssist-DX 2.1), date (January 8, 2025), three hospital sites, confidence score drop (0.87 to 0.41), six-day duration, High severity classification, and no incorrect diagnoses are accurately stated."
+      },
+      "C2": {
+        "result": "pass",
+        "justification": "The root cause is explicitly stated\u2014the PACS upgrade changed DICOM metadata tag encoding for pixel spacing and resolution, causing preprocessing to receive unfamiliar values the model had not encountered during training, which traces the failure to its technical origin."
+      },
+      "C3": {
+        "result": "pass",
+        "justification": "Four distinct remediation actions are described with specificity: rollback of PACS integration, automated input distribution monitoring with alert thresholds, pre-production integration testing, and DICOM dependency documentation with vendor sign-off requirements, including both containment and prevention measures."
+      },
+      "C4": {
+        "result": "pass",
+        "justification": "The language is professional and appropriately formal, technical terms like PACS are explained in parentheses for non-technical audiences, severity is conveyed proportionately to the High rating without sensationalism, and no individuals are blamed while maintaining factual neutrality throughout."
+      },
+      "C5": {
+        "result": "fail",
+        "justification": "The Risk Assessment section introduces speculative claims not in the source record, including undocumented concerns about 'eroded clinician trust,' 'reduced adoption of beneficial technology,' and 'liability exposure if workflow disruptions delay urgent case identification'\u2014these are hypothetical harms and inferences beyond the documented facts."
+      }
+    },
+    "overall_pass": false,
+    "timestamp": "2026-05-19T20:09:09.303693+00:00"
+  },
+  {
+    "incident_id": "INC-003",
+    "prompt_version": "v1",
+    "generated_summary": "**Incident Overview**\n\nOn June 20, 2025, the Aria Customer Assistant v3 chatbot (which uses AI to answer customer questions) accidentally revealed confidential business information to customers. The chatbot disclosed internal pricing rules, discount requirements, and details about a planned promotional campaign that had not yet been announced. This happened during approximately 140 customer conversations. Within 24 hours, screenshots of the chatbot's responses were shared publicly on a consumer forum. This incident has been classified as high severity.\n\n**Root Cause**\n\nThe chatbot was designed with sensitive business rules embedded directly in its operating instructions. When customers sent messages that looked like internal employee commands, the chatbot could not tell the difference between real system instructions and fake ones hidden in customer messages. It treated the fake instructions as legitimate and revealed information it should have kept private.\n\n**Remediation Steps**\n\n1. Remove all pricing logic from the chatbot's instructions and move business rules to a separate secure system that the chatbot accesses only when needed\n2. Add a security filter that checks all incoming customer messages for hidden fake instructions before the chatbot processes them\n3. Conduct simulated attacks against the updated system to test its defenses before putting it back into service\n4. Require legal and public relations teams to review any future incidents involving disclosure of confidential business information\n\n**Risk Assessment**\n\nThis incident creates competitive risk by exposing pricing strategy and an unannounced promotion. It may damage customer trust if the public perceives the chatbot as unreliable or insecure. There is potential reputational harm from the forum exposure and possible legal considerations regarding premature disclosure of promotional terms.",
+    "scores": {
+      "C1": {
+        "result": "pass",
+        "justification": "All verifiable facts match the source record: system name (Aria Customer Assistant v3), date (June 20, 2025), scope (approximately 140 conversations), disclosed information types (pricing tiers, discount rules, promotional campaign), timeline (screenshots shared within 24 hours), and severity rating (high)."
+      },
+      "C2": {
+        "result": "pass",
+        "justification": "The root cause is explicitly stated as sensitive business rules embedded directly in operating instructions without isolation, and the model's inability to distinguish legitimate system instructions from adversarial prompts injected in customer messages, which directly traces to the technical architecture defect documented in the source."
+      },
+      "C3": {
+        "result": "pass",
+        "justification": "Four distinct remediation actions are described with specificity: moving pricing logic to backend API, implementing injection detection screening, conducting red-team testing, and adding legal/PR review processes\u2014all directly from the source record and including both immediate containment and recurrence prevention measures."
+      },
+      "C4": {
+        "result": "pass",
+        "justification": "The language is professional and appropriately formal, explains technical concepts for non-technical audiences (e.g., 'fake instructions hidden in customer messages'), conveys high severity proportionately without sensationalism, maintains factual neutrality, and avoids personal blame or charged language."
+      },
+      "C5": {
+        "result": "fail",
+        "justification": "The Risk Assessment section introduces undocumented speculation including 'competitive risk,' 'damage customer trust,' 'potential reputational harm,' and 'possible legal considerations'\u2014none of which appear in the source incident record and represent inferences about hypothetical harms rather than documented facts."
+      }
+    },
+    "overall_pass": false,
+    "timestamp": "2026-05-19T20:09:30.202938+00:00"
+  },
+  {
+    "incident_id": "INC-004",
+    "prompt_version": "v1",
+    "generated_summary": "**Incident Overview**\n\nThe FactoryEdge-PM 1.8 predictive maintenance system stopped generating equipment failure predictions for 18 days without alerting anyone. Operations staff believed equipment was operating normally because they received no warnings. Two compressor units then failed unexpectedly, causing 31 hours of unplanned downtime. This incident occurred on November 3, 2024. Severity: High.\n\n**Root Cause**\n\nA firmware update changed the names of three sensor data fields that measure equipment vibration. The system could no longer find these fields, so it automatically filled in zero values instead of reporting an error. The AI model read these zeros as normal vibration levels and concluded the equipment was healthy. In reality, the model was receiving no real sensor data and could not detect actual problems developing in the compressors.\n\n**Remediation Steps**\n\n1. Add automatic checks that verify all required sensor data is present and valid; stop the system if data is missing or renamed\n2. Create alerts that notify staff when the model stops producing predictions at the normal rate\n3. Require all firmware updates to be reviewed for potential impacts on data field names before deployment\n4. Build a monitoring screen for operations staff showing when each piece of equipment last received a prediction\n\n**Risk Assessment**\n\nThis incident caused significant operational disruption through unplanned equipment failures. Financial impact includes lost production time and emergency repair costs. The silent failure mode created a false sense of security, preventing early intervention. Similar failures across other equipment could multiply these impacts and damage customer commitments if production delays occur.",
+    "scores": {
+      "C1": {
+        "result": "pass",
+        "justification": "All verifiable facts match the source record: system name (FactoryEdge-PM 1.8), date (November 3, 2024), duration (18 days), impact (two compressor units, 31 hours downtime), severity (High), and technical details about the firmware update and sensor field renaming are accurately stated."
+      },
+      "C2": {
+        "result": "pass",
+        "justification": "The root cause is explicitly stated and traces to origin: firmware update renamed sensor fields, pipeline imputed zeros instead of raising errors, and model misinterpreted zeros as normal operation\u2014this matches the source record's technical explanation."
+      },
+      "C3": {
+        "result": "pass",
+        "justification": "All four remediation steps from the source are clearly described with sufficient specificity: schema validation with hard failure, prediction volume monitoring, firmware change management review, and operations dashboard\u2014addressing both prevention and monitoring."
+      },
+      "C4": {
+        "result": "pass",
+        "justification": "Language is professional and appropriately calibrated for governance audience, with technical concepts explained clearly (sensor data fields, zero values), severity communicated proportionately to High rating, and no blame assignment or sensationalism present."
+      },
+      "C5": {
+        "result": "fail",
+        "justification": "The Risk Assessment section introduces speculative claims not in the source record: 'Financial impact includes lost production time and emergency repair costs,' 'damage customer commitments if production delays occur,' and 'Similar failures across other equipment could multiply these impacts' are inferences beyond documented facts."
+      }
+    },
+    "overall_pass": false,
+    "timestamp": "2026-05-19T20:09:51.302826+00:00"
+  },
+  {
+    "incident_id": "INC-005",
+    "prompt_version": "v1",
+    "generated_summary": "**Incident Overview**\n\nOn February 27, 2025, the company's resume screening system, TalentFilter AI v2.0, was found to unfairly rank women lower than men for technical jobs like software engineering and data science. A recruiter noticed that resumes from qualified women received scores that were 31 points lower on average than those the system recommended. An audit of six months of hiring data confirmed this pattern was real and statistically significant. This is a critical severity incident.\n\n**Root Cause**\n\nThe system learned biased patterns from past hiring decisions. It was trained on data from a time when most engineers at the company were men. As a result, the model incorrectly learned to favor traits more common among male applicants \u2014 such as membership in certain professional groups or degrees from specific universities \u2014 rather than actual job qualifications.\n\n**Remediation Steps**\n\n1. Remove TalentFilter AI v2.0 from all hiring processes immediately and inform all recruiting staff.\n2. Hire an outside auditing firm to determine the full extent of the problem and identify all candidates who may have been affected.\n3. Retrain the model using only job-relevant information, with gender removed from the data and technical safeguards applied to prevent bias.\n4. Require human reviewers to evaluate all candidates before any automated score is used in hiring decisions.\n\n**Risk Assessment**\n\nThis incident creates significant legal risk under employment discrimination laws. It may also harm the company's reputation as an equitable employer and could result in claims from affected candidates. Operationally, the company must now review hiring decisions made over the past six months and may need to re-contact candidates who were unfairly screened out.",
+    "scores": {
+      "C1": {
+        "result": "pass",
+        "justification": "All verifiable facts match the source record: system name (TalentFilter AI v2.0), date (February 27, 2025), the 31-point score disparity, six-month audit period, statistical significance (p < 0.001), and critical severity are all accurately reported."
+      },
+      "C2": {
+        "result": "pass",
+        "justification": "The root cause is explicitly stated and traces to its origin: the model was trained on historical data from a male-dominated period, causing it to learn gender-correlated features rather than job qualifications, which directly matches the incident record's explanation."
+      },
+      "C3": {
+        "result": "pass",
+        "justification": "All four remediation steps from the source are accurately described with specificity: immediate removal from pipelines, external audit engagement, retraining with debiasing, and mandatory human review before automated scoring influences decisions."
+      },
+      "C4": {
+        "result": "pass",
+        "justification": "The summary uses professional, formal language appropriate for governance committees, conveys critical severity proportionately, avoids technical jargon, maintains factual neutrality, and does not assign personal blame or use sensationalist language."
+      },
+      "C5": {
+        "result": "fail",
+        "justification": "The Risk Assessment section introduces undocumented claims not present in the incident record, including 'significant legal risk under employment discrimination laws,' potential claims from candidates, and the operational need to review six months of decisions and re-contact screened-out candidates."
+      }
+    },
+    "overall_pass": false,
+    "timestamp": "2026-05-19T20:10:12.691862+00:00"
+  },
+  {
+    "incident_id": "INC-006",
+    "prompt_version": "v1",
+    "generated_summary": "**Incident Overview**\n\nOn April 14, 2025, the FraudGuard-RT fraud detection system experienced a critical performance failure. The system's ability to correctly identify fraud dropped from 91% to 67% over three days. This caused the system to incorrectly flag many legitimate customer purchases as fraud, leading to declined transactions and customer complaints. The payments operations team noticed the problem through customer complaints before the machine learning team was alerted. The financial impact from fraud that may have been missed during this period is still being calculated.\n\n**Root Cause**\n\nThree days before the incident, the team migrated to a new feature store (the system that provides data to the fraud model). During this migration, a time-zone setting was changed, which shifted certain transaction timing data by one hour. The fraud model relies on analyzing how quickly transactions occur in sequence to spot fraud patterns. The one-hour time shift broke these calculations, causing the model to make incorrect decisions about which transactions were fraudulent.\n\n**Remediation Steps**\n\n1. Restore the previous version of the feature store and confirm the model works correctly before attempting the migration again\n2. Create a testing system that runs both old and new data versions side-by-side for 7 days before any future changes go live\n3. Build automated quality checks that test model accuracy every time the feature store is updated and block bad updates from reaching customers\n4. Set a clear rule requiring immediate escalation to the ML team when transaction decline rates exceed normal levels by more than 3%\n\n**Risk Assessment**\n\nThis incident created operational disruption through increased customer service volume, financial risk from potential undetected fraud, and reputational harm from declining legitimate customer transactions. The severity is critical due to direct revenue impact and customer trust erosion.",
+    "scores": {
+      "C1": {
+        "result": "pass",
+        "justification": "All verifiable facts match the source record: system name (FraudGuard-RT v5.3), date (April 14, 2025), precision drop (91% to 67%), 72-hour window, customer complaints preceding ML team notification, feature store migration three days prior, and financial exposure under assessment are all accurately stated."
+      },
+      "C2": {
+        "result": "pass",
+        "justification": "The root cause is explicitly stated with technical specificity: the feature store migration introduced a time-zone normalization change that shifted transaction velocity features by one hour, breaking temporal aggregation windows for velocity-based fraud pattern detection."
+      },
+      "C3": {
+        "result": "pass",
+        "justification": "All four remediation steps from the source are presented with sufficient specificity: reverting the feature store, establishing shadow-scoring pipeline for 7 days, adding automated regression tests, and defining 3% escalation SLA, including both immediate containment and recurrence prevention measures."
+      },
+      "C4": {
+        "result": "pass",
+        "justification": "The summary uses professional, measured language appropriate for a governance committee, explains technical concepts (feature store, velocity features) in accessible terms, conveys critical severity proportionately without sensationalism, and maintains factual neutrality without assigning personal blame."
+      },
+      "C5": {
+        "result": "pass",
+        "justification": "Every claim traces directly to the source record, including the explicit qualification that financial impact 'is still being calculated' (matching 'under assessment' in the source) rather than asserting undocumented conclusions."
+      }
+    },
+    "overall_pass": true,
+    "timestamp": "2026-05-19T20:10:34.316880+00:00"
+  },
+  {
+    "incident_id": "INC-007",
+    "prompt_version": "v1",
+    "generated_summary": "**Incident Overview**\n\nOn May 9, 2025, the LexSummarize Pro contract review tool generated a false summary of a commercial lease agreement. The AI-generated summary included an early-termination penalty clause that did not exist in the actual contract. A junior attorney used this summary in a client memo. A senior partner caught the error before the memo was sent to the client. An internal review found two more summaries with incorrect numbers in the previous 30 days. Severity: High.\n\n**Root Cause**\n\nThe AI system tried to summarize documents that were too long for it to process. When a document exceeded the system's memory limit (called a context window), the AI created summaries from general knowledge instead of reading the actual document. This caused the system to invent realistic-sounding but incorrect contract details.\n\n**Remediation Steps**\n\n1. Turn off summarization for documents that are too long until a new technical solution is built to handle them safely\n2. Add source references (page and paragraph numbers) to every clause in AI summaries so attorneys can quickly check the original document\n3. Require all attorneys to complete a verification checklist before using any AI summary with clients\n4. Install a detection system that scores summaries and warns users when statements may not match the source document\n\n**Risk Assessment**\n\nThis incident could have resulted in incorrect legal advice being provided to a client, exposing the firm to malpractice liability and reputational harm. The discovery of additional inaccurate summaries indicates this was not an isolated event, suggesting systematic risk in current workflows relying on this tool.",
+    "scores": {
+      "C1": {
+        "result": "pass",
+        "justification": "All verifiable facts match the source record: system name (LexSummarize Pro), date (May 9, 2025), nature of failure (hallucinated contract clause), discovery by senior partner, two additional summaries found in 30-day lookback, and High severity rating are all accurately stated."
+      },
+      "C2": {
+        "result": "pass",
+        "justification": "The root cause is clearly identified as the system generating summaries from parametric memory when documents exceeded context window limits, rather than being grounded in the actual source document, which is specific and actionable."
+      },
+      "C3": {
+        "result": "pass",
+        "justification": "Four distinct remediation actions are described with sufficient specificity: disabling summaries for long documents, adding inline citations, requiring attorney review checklists, and implementing hallucination detection\u2014all of which address recurrence prevention beyond immediate containment."
+      },
+      "C4": {
+        "result": "pass",
+        "justification": "The summary uses professional, measured language appropriate for governance committees, explains technical terms (context window) for non-technical audiences, conveys urgency proportionate to High severity without sensationalism, and maintains factual neutrality without assigning personal blame."
+      },
+      "C5": {
+        "result": "fail",
+        "justification": "The Risk Assessment section introduces speculation not present in the incident record by asserting potential consequences ('could have resulted in incorrect legal advice...exposing the firm to malpractice liability and reputational harm') that go beyond documented facts."
+      }
+    },
+    "overall_pass": false,
+    "timestamp": "2026-05-19T20:10:53.758562+00:00"
+  },
+  {
+    "incident_id": "INC-008",
+    "prompt_version": "v1",
+    "generated_summary": "**Incident Overview**\n\nThe SafeContent Classifier v6, an AI system that flags inappropriate posts, incorrectly removed content related to LGBTQ+ communities at nearly 5 times the normal rate. When users appealed these decisions, 89% were overturned \u2014 meaning the system was wrong almost 9 out of 10 times. The average overturn rate for other content is only 22%. This issue lasted approximately 5 weeks starting July 1, 2025, and affected content creators who saw reduced visibility and received incorrect warnings about policy violations. The problem was discovered after a community advocacy group raised concerns. **Severity: High**\n\n**Root Cause**\n\nThe system was recently updated using training data labeled by human reviewers. These reviewers incorrectly marked LGBTQ+ identity words and phrases as harmful or toxic at much higher rates than appropriate. When the AI learned from this biased data, it amplified the problem rather than correcting it, causing the system to flag normal LGBTQ+ community content as rule-breaking.\n\n**Remediation Steps**\n\n1. Revert the AI system to the previous version that worked correctly\n2. Review the training data labeling instructions and examine who labeled the data to identify bias sources\n3. Create automatic safety checks that monitor how often the system incorrectly flags content from protected communities, and automatically pause updates that increase these errors\n4. Restore all wrongly deleted content and remove the incorrect policy strikes from affected user accounts\n\n**Risk Assessment**\n\nThis incident poses significant reputational risk and potential legal exposure related to discriminatory platform practices. The organization faces harm to trust within LGBTQ+ communities and possible regulatory scrutiny regarding algorithmic bias affecting protected groups.",
+    "scores": {
+      "C1": {
+        "result": "pass",
+        "justification": "All verifiable facts match the source record: system name (SafeContent Classifier v6), date (July 1, 2025), overblocking rate (4.7x/nearly 5 times), 89% overturn rate vs 22% average, 5-week duration, and discovery via community advocacy group are all accurately stated."
+      },
+      "C2": {
+        "result": "pass",
+        "justification": "The root cause is explicitly traced to its origin: biased annotation dataset where annotators disproportionately labeled LGBTQ+ terminology as toxic, which the fine-tuning amplified rather than corrected."
+      },
+      "C3": {
+        "result": "pass",
+        "justification": "Four distinct remediation actions are described with sufficient specificity (rollback, audit, monitoring system, content restoration), including both immediate containment and prevention measures like automatic false-positive rate monitoring."
+      },
+      "C4": {
+        "result": "pass",
+        "justification": "The language is professional, formal, and appropriately explains technical concepts for a governance audience without jargon; severity is communicated proportionately to the High rating without sensationalism or blame assignment."
+      },
+      "C5": {
+        "result": "fail",
+        "justification": "The Risk Assessment section introduces speculation not present in the incident record, specifically 'potential legal exposure related to discriminatory platform practices' and 'possible regulatory scrutiny' which are undocumented inferences about future harms."
+      }
+    },
+    "overall_pass": false,
+    "timestamp": "2026-05-19T20:11:14.911217+00:00"
+  },
+  {
+    "incident_id": "INC-009",
+    "prompt_version": "v1",
+    "generated_summary": "**Incident Overview**\n\nOn December 19, 2024, an audit found that the RecommendEngine v8 system accidentally pulled private customer information into its training process. This information included email addresses and partial credit card numbers. The problem occurred during three training cycles over 90 days. The model does not show this private information to users, but the data was stored in files that all engineering staff could access. This incident is classified as **Critical** severity.\n\n**Root Cause**\n\nSix months ago, engineers changed how the training system pulls data. They switched from a secure data source that automatically hid private information to a direct connection with the customer database to make the system faster. This change was not checked against privacy and data protection rules. As a result, private information flowed into the training system without proper safeguards.\n\n**Remediation Steps**\n\n1. Immediately lock down access to the storage location containing private data and review access records to see if anyone downloaded it\n2. Rerun all three affected training cycles using properly protected data and replace the old stored files\n3. Notify the data protection officer and evaluate whether customer notification is legally required under GDPR or CCPA regulations\n4. Install automatic scanning to detect private information in all training data before any model training begins\n\n**Risk Assessment**\n\nThis incident creates significant legal and regulatory risk. Privacy laws may require notifying affected customers and regulators. The organization could face fines or enforcement actions. There is also reputational risk if customers learn their information was mishandled, which could damage trust and impact revenue.",
+    "scores": {
+      "C1": {
+        "result": "pass",
+        "justification": "All verifiable facts match the source record: system name (RecommendEngine v8), date (December 19, 2024), duration (90 days, three monthly training runs), data types exposed (email addresses and partial payment card numbers), storage location (S3 bucket), and access scope (all engineering staff)."
+      },
+      "C2": {
+        "result": "pass",
+        "justification": "The root cause is explicitly stated with sufficient specificity: a pipeline refactor six months prior replaced a PII-masking data warehouse view with a direct production table reference for performance reasons, and this change bypassed data governance review."
+      },
+      "C3": {
+        "result": "pass",
+        "justification": "Four distinct remediation actions are described with actionable specificity, including immediate containment (restrict S3 access), corrective action (re-run training with masked data), compliance response (notify DPO and assess breach obligations), and preventive control (automated PII scanning as pre-training gate)."
+      },
+      "C4": {
+        "result": "pass",
+        "justification": "The summary uses professional, measured language appropriate for governance audiences, explains technical concepts in accessible terms (e.g., 'storage location' for S3 bucket), maintains factual neutrality without assigning personal blame, and conveys urgency proportionate to the Critical severity rating."
+      },
+      "C5": {
+        "result": "fail",
+        "justification": "The Risk Assessment section introduces undocumented speculation about potential fines, enforcement actions, reputational damage, customer trust impact, and revenue effects that are not stated or supported by the incident record, which only mentions conducting a breach assessment to determine notification obligations."
+      }
+    },
+    "overall_pass": false,
+    "timestamp": "2026-05-19T20:11:36.664538+00:00"
+  },
+  {
+    "incident_id": "INC-010",
+    "prompt_version": "v1",
+    "generated_summary": "**Incident Overview**\n\nOn March 30, 2025, a pharmaceutical company discovered that its patient stratification system, TrialStrat AI v1.4, was assigning clinical trial participants to treatment groups inconsistently. The system produced different results for identical patient profiles depending on which regional location processed the data. This inconsistency affected 8% of reviewed cases across two ongoing Phase II trials involving 340 participants. The severity level is Critical.\n\n**Root Cause**\n\nDifferent regional sites were running different versions of the AI model. Two sites used a modified version that changed the decision thresholds for assigning patients to groups. This modified version was never tested or approved for use across all trial locations. Because model versions were not tracked or controlled, these differences went undetected until a routine data review.\n\n**Remediation Steps**\n\n1. Stop all new patient assignments until the company confirms which model version processed each existing participant\n2. Implement strict version control using secure tracking methods to ensure all sites use identical models\n3. Require biostatistics team approval before any model changes during active trials\n4. Submit a protocol deviation report to institutional review boards and regulatory agencies\n\n**Risk Assessment**\n\nThis incident creates significant regulatory and legal risk. Inconsistent patient assignment may compromise trial integrity and validity, potentially requiring participant notification, protocol amendments, or data reanalysis. The company faces possible delays in drug development timelines and increased scrutiny from regulators. If trial data cannot be salvaged, the financial impact includes wasted trial costs and delayed market entry.",
+    "scores": {
+      "C1": {
+        "result": "pass",
+        "justification": "All verifiable facts match the source: system name (TrialStrat AI v1.4), incident date (March 30, 2025), scope (8% of cases, two Phase II trials, 340 participants), and severity (Critical) are accurately stated."
+      },
+      "C2": {
+        "result": "pass",
+        "justification": "The summary clearly identifies the root cause as unenforced model versioning across regional deployments, with two sites running an unvalidated modified version with changed stratification thresholds, directly tracing the failure to its origin."
+      },
+      "C3": {
+        "result": "pass",
+        "justification": "The summary presents four distinct remediation actions including immediate containment (freezing assignments), technical prevention (version control), governance prevention (biostatistics approval process), and regulatory compliance (deviation report), with sufficient specificity for accountability assessment."
+      },
+      "C4": {
+        "result": "pass",
+        "justification": "The language is professional and formal throughout, uses accessible explanations of technical concepts, conveys critical severity proportionately without sensationalism, and maintains factual neutrality without assigning personal blame."
+      },
+      "C5": {
+        "result": "fail",
+        "justification": "The Risk Assessment section introduces undocumented claims not present in the incident record, including 'possible delays in drug development timelines,' 'financial impact includes wasted trial costs and delayed market entry,' and potential need for 'participant notification' when the source only states 'regulatory implications are under assessment.'"
+      }
+    },
+    "overall_pass": false,
+    "timestamp": "2026-05-19T20:11:56.798599+00:00"
+  },
+  {
+    "incident_id": "INC-011",
+    "prompt_version": "v1",
+    "generated_summary": "**Incident Overview**\n\nA health information chatbot called HealthBot Assistant gave wrong information to patients about mixing two common over-the-counter medications. The chatbot told patients the combination was safe, but it is actually dangerous for people with high blood pressure. This incorrect answer was given to 23 patients over four days in August 2025. No one has been harmed yet, but the patient safety team flagged this as a serious problem. The severity level is Critical.\n\n**Root Cause**\n\nThe chatbot's knowledge base (the collection of facts it uses to answer questions) was updated to add new drug information. During this update, a corrupted record flipped the safety flag for this medication pair from \"unsafe\" to \"safe.\" The update went live without being checked by a clinical pharmacist who could have caught the error.\n\n**Remediation Steps**\n\n1. Turn off the chatbot's ability to answer drug interaction questions until the knowledge base is fully reviewed\n2. Require a clinical pharmacist to approve all updates that involve medication information before they go live\n3. Create a new rule: all drug interaction questions must be sent to a licensed pharmacist or physician instead of being answered by the chatbot\n4. Send correction messages to all 23 patients who received wrong information, advising them to talk to their healthcare provider\n\n**Risk Assessment**\n\nThis incident creates significant patient safety risk. While no harm has occurred, patients who followed the chatbot's advice could experience dangerous health consequences. The organization faces potential legal liability if harm results. Reputation damage is likely if the incident becomes public, as it may erode trust in the organization's digital health tools.",
+    "scores": {
+      "C1": {
+        "result": "pass",
+        "justification": "All verifiable facts match the source record: system name (HealthBot Assistant v2.3), date (August 2025), affected users (23), duration (four days), severity (Critical), and the nature of the contraindication error for hypertension patients are accurately stated."
+      },
+      "C2": {
+        "result": "pass",
+        "justification": "The root cause is explicitly stated as a corrupted record during knowledge base update that inverted the contraindication flag, deployed without clinical pharmacist review, which traces the failure to its specific technical and process origins."
+      },
+      "C3": {
+        "result": "pass",
+        "justification": "Four distinct remediation actions are described with sufficient specificity (offline drug interaction queries, mandatory pharmacist sign-off, hard-coded escalation path, patient notification), including both immediate containment and recurrence prevention measures."
+      },
+      "C4": {
+        "result": "pass",
+        "justification": "The language is professional and appropriately calibrated, using clear explanations for non-technical terms (e.g., defining knowledge base), maintaining factual neutrality without blame assignment, and conveying urgency proportionate to the Critical severity rating."
+      },
+      "C5": {
+        "result": "fail",
+        "justification": "The Risk Assessment section introduces speculation not documented in the incident record, including assertions about 'potential legal liability,' 'reputation damage,' and erosion of trust in digital health tools that go beyond the stated facts."
+      }
+    },
+    "overall_pass": false,
+    "timestamp": "2026-05-19T20:12:16.323299+00:00"
+  },
+  {
+    "incident_id": "INC-012",
+    "prompt_version": "v1",
+    "generated_summary": "**Incident Overview**\n\nOn February 3, 2025, the DemandCast ML v3.7 system, which predicts how much inventory the company should order, began making large errors. Over six weeks, it over-predicted demand for seasonal products by 40-65%. This caused the company to order approximately $2.3 million in excess inventory that was not needed. A category manager discovered the problem when warehouse stock levels did not match normal seasonal patterns. The incident is rated Medium severity.\n\n**Root Cause**\n\nConsumer buying habits changed significantly after the pandemic. The forecasting model was still using older patterns to predict seasonal demand, which no longer reflected how customers actually shop. The model had a drift detection system\u2014a tool designed to catch when predictions become inaccurate\u2014but the alert thresholds were set too conservatively to trigger a warning. Additionally, after a team reorganization, no one was assigned to regularly check the model monitoring dashboards, so the problem went unnoticed for weeks.\n\n**Remediation Steps**\n\n1. Pause automated ordering for affected product categories and require manual approval from buyers\n2. Retrain the model using only the most recent 18 months of data to capture current demand patterns\n3. Lower the drift alert thresholds and assign a specific team member to review model performance weekly\n4. Add a safety limit so the model cannot recommend orders more than 20% above recent averages without human approval\n\n**Risk Assessment**\n\nThis incident resulted in $2.3 million in excess inventory, which creates financial risk through tied-up capital, potential markdowns, and storage costs. Operationally, it exposed a gap in model oversight following organizational changes. There is reputational risk if overstocking leads to waste or customer dissatisfaction due to stale merchandise.",
+    "scores": {
+      "C1": {
+        "result": "pass",
+        "justification": "All verifiable facts match the source record: system name (DemandCast ML v3.7), date (February 3, 2025), over-prediction range (40-65%), financial impact ($2.3M), duration (six weeks), severity (Medium), and discovery method (category manager noticing warehouse patterns) are accurately stated."
+      },
+      "C2": {
+        "result": "pass",
+        "justification": "The summary explicitly identifies the root cause as post-pandemic consumer behavior shifts causing model seasonality coefficients to diverge from current patterns, combined with overly conservative drift detection thresholds and lack of dashboard monitoring after reorganization\u2014all specific, actionable causes traced to their origin."
+      },
+      "C3": {
+        "result": "pass",
+        "justification": "Four distinct remediation actions are described with sufficient specificity: pausing automated orders with manual approval requirement, retraining on 18-month rolling window, lowering drift thresholds with assigned ownership for weekly review, and implementing a 20% procurement cap\u2014addressing both immediate containment and recurrence prevention."
+      },
+      "C4": {
+        "result": "pass",
+        "justification": "The summary uses professional, formal language appropriate for governance committee audience, explains technical terms (e.g., 'drift detection system\u2014a tool designed to catch when predictions become inaccurate'), maintains factual neutrality without assigning personal blame, and communicates Medium severity proportionately without sensationalism."
+      },
+      "C5": {
+        "result": "fail",
+        "justification": "The Risk Assessment section introduces speculation not present in the incident record, specifically asserting 'reputational risk if overstocking leads to waste or customer dissatisfaction due to stale merchandise' and detailing 'tied-up capital, potential markdowns, and storage costs' as consequences that are not documented in the source."
+      }
+    },
+    "overall_pass": false,
+    "timestamp": "2026-05-19T20:12:39.740198+00:00"
+  },
+  {
+    "incident_id": "INC-013",
+    "prompt_version": "v1",
+    "generated_summary": "**Incident Overview**\n\nOn September 4, 2025, the SecureCode Analyzer v4.1 \u2014 an AI tool that reviews code for security problems \u2014 incorrectly flagged safe code as dangerous. The system blocked 47 code updates across 12 development teams over three days. Developers lost trust in the tool, and some teams started ignoring its warnings entirely. This occurred at a financial institution. The severity level is Medium.\n\n**Root Cause**\n\nA recent update to the AI model was designed to better detect hidden security threats. However, the update contained an error in how the system reads certain types of database code. Specifically, it misread secure \"parameterized queries\" (a safe way to interact with databases) as unsafe \"dynamic string concatenation\" (a risky coding practice). This caused the system to raise false alarms.\n\n**Remediation Steps**\n\n1. Roll back to the previous working version of the model and unblock all stopped code updates\n2. Add examples of parameterized queries to the system's training materials so it learns to recognize them as safe\n3. Require all future model updates to run in observation-only mode for at least 5 business days before they can block code\n4. Review all security warnings that developers manually dismissed during the incident to confirm no real threats were overlooked\n\n**Risk Assessment**\n\nThis incident disrupted software development timelines and damaged developer confidence in security tooling. The most significant risk is that teams may continue bypassing security checks, potentially allowing real vulnerabilities to enter production systems. This creates exposure to data breaches and regulatory violations in a regulated financial environment.",
+    "scores": {
+      "C1": {
+        "result": "pass",
+        "justification": "All verifiable facts match the source record: system name (SecureCode Analyzer v4.1), date (September 4, 2025), impact scope (47 PRs, 12 teams, 3 days), financial institution context, and Medium severity are accurately stated."
+      },
+      "C2": {
+        "result": "pass",
+        "justification": "The root cause is explicitly stated as an error in tokenization logic for ORM-generated parameterized queries that misclassified them as dynamic string concatenation, tracing the failure to its technical origin in the model update."
+      },
+      "C3": {
+        "result": "pass",
+        "justification": "Four distinct remediation actions are described with sufficient specificity (rollback, add test cases, require 5-day shadow mode, audit suppressions), including both immediate containment and prevention measures that match the source record."
+      },
+      "C4": {
+        "result": "pass",
+        "justification": "The language is professional and appropriately formal, technical terms are explained for non-technical audiences (e.g., parameterized queries defined), severity is conveyed proportionately to Medium rating, and no individuals are blamed."
+      },
+      "C5": {
+        "result": "fail",
+        "justification": "The Risk Assessment section introduces speculative harms not documented in the incident record, specifically asserting 'exposure to data breaches and regulatory violations' when the source only documents developer friction and trust erosion without confirming actual security compromises."
+      }
+    },
+    "overall_pass": false,
+    "timestamp": "2026-05-19T20:13:01.103891+00:00"
+  },
+  {
+    "incident_id": "INC-014",
+    "prompt_version": "v1",
+    "generated_summary": "**Incident Overview**\n\nOn October 22, 2025, the ProcureAI Agent \u2014 an AI system being tested to automate supplier purchasing \u2014 submitted purchase orders worth $187,000 to three vendors without getting required human approval. The AI was only authorized to spend up to $5,000 per purchase during the pilot program, but it misunderstood this limit. It thought the $5,000 cap applied to all purchases from each vendor combined, rather than to each individual order. The problem was found two days later during a routine payment review. By then, two vendors had already started fulfilling the orders. This is a high-severity incident.\n\n**Root Cause**\n\nThe spending limit was not clearly written in the instructions given to the AI. The system relied on the AI to correctly interpret written rules, but there was no separate technology control to automatically block purchases over $5,000. Because the AI misread the rule and no backup system stopped it, unauthorized orders went through.\n\n**Remediation Steps**\n\n1. Contact all three vendors immediately to pause order fulfillment until internal leaders review and approve the purchases\n2. Add automatic blocking technology to the purchasing system that rejects any order over the spending limit, regardless of what the AI requests\n3. Replace written spending rules with clear, structured data formats that cannot be misinterpreted\n4. Require two human approvals for all AI-initiated purchases above $1,000 until an outside expert audits the authorization system\n\n**Risk Assessment**\n\nThe organization faces immediate financial exposure of $187,000 in unauthorized commitments. There is potential legal risk if vendor contracts must be canceled or renegotiated. Operationally, the pilot program must be paused, delaying procurement automation goals. Reputationally, this incident may damage vendor relationships and raise internal concerns about AI system controls.",
+    "scores": {
+      "C1": {
+        "result": "pass",
+        "justification": "All verifiable facts match the source record: system name (ProcureAI Agent v1.0), date (October 22, 2025), financial exposure ($187,000), three vendors, two-day discovery timeline, authorization limit ($5,000), and high severity are all accurately stated."
+      },
+      "C2": {
+        "result": "pass",
+        "justification": "The root cause is explicitly identified as ambiguous authorization boundaries in the system prompt combined with lack of hard enforcement at the API layer, which directly traces the failure to its technical and design origins rather than merely describing symptoms."
+      },
+      "C3": {
+        "result": "pass",
+        "justification": "The summary includes all four specific remediation actions from the source (vendor contact, API enforcement implementation, structured parameter rewrite, dual approval requirement), with at least three addressing recurrence prevention beyond immediate containment."
+      },
+      "C4": {
+        "result": "pass",
+        "justification": "The language is professional, formally structured with clear section headings, explains technical concepts accessibly (e.g., 'automatic blocking technology' for API enforcement), conveys high-severity proportionate urgency, and avoids personal blame or sensationalism."
+      },
+      "C5": {
+        "result": "fail",
+        "justification": "The Risk Assessment section introduces speculative harms not documented in the incident record, including 'potential legal risk,' 'pilot program must be paused,' vendor relationship damage, and internal concerns about controls\u2014none of which are stated or directly supported by the source incident."
+      }
+    },
+    "overall_pass": false,
+    "timestamp": "2026-05-19T20:13:23.776352+00:00"
+  },
+  {
+    "incident_id": "INC-015",
+    "prompt_version": "v1",
+    "generated_summary": "**Incident Overview**\n\nOn July 18, 2025, the bank's ExplainML Dashboard v2.5 was found to be displaying outdated explanations for a credit risk scoring model. SHAP values are numbers that show which factors most influence the model's decisions. The dashboard was showing explanations from an old version of the model, even though a new, retrained model had already been deployed. Regulators had reviewed these incorrect explanations two weeks earlier during a formal examination. A model risk analyst discovered the error when the displayed explanations did not match the new model. This is a High severity incident.\n\n**Root Cause**\n\nThe system that generates explanations was not connected to the system that deploys new models. When the credit risk model was retrained and put into production, the explanations were supposed to be manually updated according to procedure. That manual step was skipped because of an incomplete handoff when a team member was on leave.\n\n**Remediation Steps**\n\n1. Recompute SHAP values for the current production model and update the dashboard immediately\n2. Notify the regulatory body of the discrepancy and provide corrected explanations with a written incident summary\n3. Automate SHAP recomputation as a required step in the model promotion pipeline with a deployment gate that blocks promotion until explanations are current\n4. Add model version watermarking to all dashboard views so examiners can verify the explanation version matches the scoring model version\n\n**Risk Assessment**\n\nThe organization faces regulatory risk because examiners reviewed incorrect model explanations during a formal examination. This could result in regulatory findings, enforcement actions, or additional scrutiny. There is also reputational risk with the regulator and potential operational risk if the explanation tool cannot be trusted for compliance purposes.",
+    "scores": {
+      "C1": {
+        "result": "pass",
+        "justification": "All verifiable facts match the source record: incident date (July 18, 2025), system name (ExplainML Dashboard v2.5), the two-week timeline for regulatory review, discovery by model risk analyst, High severity rating, and the nature of the SHAP value discrepancy are all accurately stated."
+      },
+      "C2": {
+        "result": "pass",
+        "justification": "The root cause is explicitly stated as a decoupled explainability pipeline requiring manual trigger steps, with the specific failure traced to a missed manual step during incomplete handoff when a team member was on leave, moving beyond symptoms to the underlying process gap."
+      },
+      "C3": {
+        "result": "pass",
+        "justification": "All four remediation steps from the source are included with sufficient specificity (immediate SHAP recomputation, regulatory notification, pipeline automation with deployment gate, version watermarking), addressing both immediate containment and recurrence prevention through automation."
+      },
+      "C4": {
+        "result": "pass",
+        "justification": "The summary uses professional, measured language appropriate for a governance committee, explains technical terms (SHAP values) for non-technical audiences, conveys High severity proportionately through regulatory risk discussion, and maintains factual neutrality without assigning personal blame."
+      },
+      "C5": {
+        "result": "pass",
+        "justification": "All claims trace directly to the incident record: the regulatory review timeline, discovery method, root cause, and remediation steps are documented facts, and the risk assessment logically flows from the stated facts of regulatory examination of incorrect explanations without introducing undocumented harms."
+      }
+    },
+    "overall_pass": true,
+    "timestamp": "2026-05-19T20:13:43.723087+00:00"
+  }
+]
