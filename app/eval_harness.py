@@ -44,9 +44,12 @@ def load_incident(incident_id: str) -> dict:
     )
 
 
-def load_subject_prompt() -> str:
-    """Return the system prompt for the summary-generating model."""
-    return (PROMPTS_DIR / "subject_prompt_v1.txt").read_text()
+def load_subject_prompt(version: str = "v1") -> str:
+    """Return the system prompt for the given version (e.g. 'v1', 'v2')."""
+    path = PROMPTS_DIR / f"subject_prompt_{version}.txt"
+    if not path.exists():
+        raise FileNotFoundError(f"Prompt file not found: {path}")
+    return path.read_text()
 
 
 def load_rubric() -> dict:
@@ -147,11 +150,6 @@ def judge_summary(
 
     raw = response.content[0].text.strip()
 
-    # Debug: show exactly what the model returned before parsing
-    print("=== RAW JUDGE RESPONSE ===")
-    print(raw)
-    print("==========================")
-
     # Strip markdown code fences if the model wrapped the JSON
     if raw.startswith("```"):
         lines = raw.splitlines()
@@ -168,14 +166,18 @@ def judge_summary(
 # Public entry point
 # ---------------------------------------------------------------------------
 
-def run_evaluation(incident_id: str) -> dict:
+def run_evaluation(incident_id: str, prompt_version: str = "v1") -> dict:
     """
     Run the full evaluation pipeline for a single incident.
+
+    Args:
+        incident_id:    e.g. "INC-001"
+        prompt_version: e.g. "v1" or "v2" — determines which subject prompt is used
 
     Returns:
         {
             "incident_id":       str,
-            "prompt_version":    "v1",
+            "prompt_version":    str,
             "generated_summary": str,
             "scores":            {criterion_id: {"result": str, "justification": str}},
             "overall_pass":      bool,   # True only if all 5 criteria pass
@@ -187,7 +189,7 @@ def run_evaluation(incident_id: str) -> dict:
 
     # Steps 1–2: load inputs
     incident = load_incident(incident_id)
-    system_prompt = load_subject_prompt()
+    system_prompt = load_subject_prompt(prompt_version)
 
     # Step 3: generate governance committee summary
     generated_summary = generate_summary(client, incident, system_prompt)
@@ -203,7 +205,7 @@ def run_evaluation(incident_id: str) -> dict:
 
     return {
         "incident_id": incident_id,
-        "prompt_version": "v1",
+        "prompt_version": prompt_version,
         "generated_summary": generated_summary,
         "scores": scores,
         "overall_pass": overall_pass,
@@ -213,5 +215,6 @@ def run_evaluation(incident_id: str) -> dict:
 
 if __name__ == "__main__":
     target_id = sys.argv[1] if len(sys.argv) > 1 else "INC-001"
-    result = run_evaluation(target_id)
+    version = sys.argv[2] if len(sys.argv) > 2 else "v1"
+    result = run_evaluation(target_id, prompt_version=version)
     print(json.dumps(result, indent=2))

@@ -1,7 +1,9 @@
 """
 run_eval_batch.py — Run the evaluation harness against all 15 incidents.
 
-Saves results to data/eval_results_v1.json and prints a summary.
+Usage:
+    python app/run_eval_batch.py          # uses v1, saves to data/eval_results_v1.json
+    python app/run_eval_batch.py v2       # uses v2, saves to data/eval_results_v2.json
 """
 
 import json
@@ -19,7 +21,6 @@ PROJECT_ROOT = Path(__file__).parent.parent
 DATA_DIR = PROJECT_ROOT / "data"
 
 INCIDENTS_FILE = DATA_DIR / "synthetic_incidents.json"
-RESULTS_FILE = DATA_DIR / "eval_results_v1.json"
 
 SLEEP_BETWEEN_CALLS = 2  # seconds
 
@@ -62,14 +63,18 @@ def print_summary(results: list[dict]) -> None:
     print("=" * 50)
 
 
-def main() -> None:
+def main(prompt_version: str = "v1") -> None:
+    results_file = DATA_DIR / f"eval_results_{prompt_version}.json"
     incident_ids = load_incident_ids()
     results = []
+
+    print(f"Running batch evaluation with prompt {prompt_version} "
+          f"({len(incident_ids)} incidents)\n")
 
     for incident_id in incident_ids:
         print(f"Evaluating {incident_id}...", end=" ", flush=True)
         try:
-            result = run_evaluation(incident_id)
+            result = run_evaluation(incident_id, prompt_version=prompt_version)
             results.append(result)
             status = "PASS" if result["overall_pass"] else "FAIL"
             print(f"done ({status})")
@@ -80,12 +85,13 @@ def main() -> None:
             time.sleep(SLEEP_BETWEEN_CALLS)
 
     # Save full results
-    with open(RESULTS_FILE, "w") as f:
+    with open(results_file, "w") as f:
         json.dump(results, f, indent=2)
-    print(f"\nResults saved to {RESULTS_FILE.relative_to(PROJECT_ROOT)}")
+    print(f"\nResults saved to {results_file.relative_to(PROJECT_ROOT)}")
 
     print_summary(results)
 
 
 if __name__ == "__main__":
-    main()
+    version = sys.argv[1] if len(sys.argv) > 1 else "v1"
+    main(prompt_version=version)
