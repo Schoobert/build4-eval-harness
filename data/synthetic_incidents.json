@@ -1,0 +1,227 @@
+[
+  {
+    "incident_id": "INC-001",
+    "incident_title": "Loan Approval Model Disparate Impact on Hispanic Applicants",
+    "incident_date": "2025-03-12",
+    "system_name": "CreditScore-ML v4.2",
+    "incident_description": "A quarterly fairness audit revealed that the consumer loan approval model was denying applications from Hispanic applicants at a rate 23% higher than demographically comparable non-Hispanic applicants with equivalent credit profiles. The disparity was first flagged by an internal model risk analyst reviewing approval rate dashboards. Initial investigation showed the model had been in production for 11 months without a formal fairness evaluation. Affected applicants had no recourse mechanism and were unaware the decision was made by an automated system.",
+    "root_cause": "The training dataset was sourced from a 15-year historical loan portfolio that reflected prior discriminatory lending practices, encoding proxy discrimination through zip code and employment-sector features. No disparate impact testing was performed before deployment.",
+    "remediation_steps": [
+      "Suspend model for new applications pending re-evaluation; route decisions to human underwriters",
+      "Conduct retrospective disparate impact analysis across all 11 months of production decisions",
+      "Retrain model on reweighted dataset with zip code and employment-sector features removed or fairness-constrained",
+      "Implement mandatory quarterly fairness audits with demographic parity and equalized odds metrics prior to any future deployment"
+    ],
+    "severity": "Critical"
+  },
+  {
+    "incident_id": "INC-002",
+    "incident_title": "Medical Imaging AI Confidence Scores Degraded After PACS Upgrade",
+    "incident_date": "2025-01-08",
+    "system_name": "RadAssist-DX 2.1",
+    "incident_description": "Radiologists at three hospital sites reported that the chest X-ray triage model began returning anomalously low confidence scores (median dropping from 0.87 to 0.41) following a Picture Archiving and Communication System (PACS) upgrade. The model continued to output predictions but flagged nearly every scan as requiring urgent human review, effectively negating its triage utility. Clinical workflow was disrupted for 6 days before the issue was escalated to the AI vendor. No incorrect diagnoses were attributed to the incident due to mandatory radiologist sign-off.",
+    "root_cause": "The PACS upgrade changed the DICOM metadata tag encoding for pixel spacing and image resolution, causing the inference pipeline's preprocessing normalization step to receive out-of-distribution pixel density values the model had never encountered during training.",
+    "remediation_steps": [
+      "Roll back PACS integration layer to previous metadata parsing schema while a permanent fix is developed",
+      "Add input distribution monitoring with automated alerts when pixel value statistics deviate more than 2 standard deviations from training baseline",
+      "Establish a pre-production integration test suite that validates model inputs across supported PACS vendor versions before any infrastructure upgrade",
+      "Document DICOM dependency specifications in model card and require vendor sign-off on infrastructure changes that touch imaging pipelines"
+    ],
+    "severity": "High"
+  },
+  {
+    "incident_id": "INC-003",
+    "incident_title": "Customer Service Chatbot Disclosed Internal Pricing Logic to Users",
+    "incident_date": "2025-06-20",
+    "system_name": "Aria Customer Assistant v3",
+    "incident_description": "A customer service LLM-based assistant responded to a series of adversarial prompt injection attempts by revealing internal pricing tier thresholds, discount eligibility rules, and a reference to an undisclosed promotional campaign scheduled for the following quarter. The prompts were crafted to appear as internal employee instructions embedded in a customer message. Approximately 140 conversations were affected before a content monitoring alert triggered human review. Screenshots of the responses were shared on a consumer forum within 24 hours.",
+    "root_cause": "The system prompt containing business logic was concatenated directly into the model context without isolation, and the model lacked sufficient instruction-following robustness to distinguish injected adversarial instructions from legitimate system-level directives.",
+    "remediation_steps": [
+      "Immediately rotate system prompt and remove all pricing logic from model context; move business rules to a backend API the model calls with sanitized outputs",
+      "Implement prompt injection detection layer that screens incoming user messages for instruction-override patterns before they reach the model",
+      "Conduct red-team exercise against the updated architecture prior to re-deployment",
+      "Add legal and PR review to incident response process for any disclosure of non-public business information"
+    ],
+    "severity": "High"
+  },
+  {
+    "incident_id": "INC-004",
+    "incident_title": "Predictive Maintenance Model Silent Failure Due to Sensor Schema Change",
+    "incident_date": "2024-11-03",
+    "system_name": "FactoryEdge-PM 1.8",
+    "incident_description": "A predictive maintenance model deployed on manufacturing floor equipment stopped generating failure predictions for 18 days without triggering any system alerts. Operations staff assumed the absence of alerts meant normal equipment status. Two compressor units subsequently failed unexpectedly, resulting in 31 hours of unplanned downtime. Post-incident analysis revealed the model had been receiving null values for three critical vibration sensor channels following a firmware update to the IoT data collection agent.",
+    "root_cause": "The IoT firmware update renamed three sensor telemetry fields, causing the feature ingestion pipeline to silently impute zeros for the missing channels rather than raising a data quality error. The model interpreted sustained zero-vibration readings as normal operating state.",
+    "remediation_steps": [
+      "Implement schema validation and non-null checks on all sensor input channels with hard failure on unexpected nulls or field renames",
+      "Add prediction volume monitoring to alert on-call when model output rate drops below expected baseline",
+      "Require change-management review for all IoT firmware updates that could affect telemetry field names or units",
+      "Introduce a model health dashboard visible to operations staff showing last-prediction timestamp per equipment unit"
+    ],
+    "severity": "High"
+  },
+  {
+    "incident_id": "INC-005",
+    "incident_title": "Resume Screening Model Systematically Downranked Women in Technical Roles",
+    "incident_date": "2025-02-27",
+    "system_name": "TalentFilter AI v2.0",
+    "incident_description": "An HR analytics team discovered that the automated resume screening model was assigning substantially lower relevance scores to resumes from women applying for software engineering and data science roles. The pattern was identified when a recruiter noticed that an all-female shortlist manually assembled by a hiring manager had a mean model score 31 points lower than the cohort the model had surfaced. A follow-up audit of 6 months of screening data confirmed the disparity was statistically significant (p < 0.001) and consistent across job families.",
+    "root_cause": "The model was trained on historical hiring decisions from a period when the engineering organization was predominantly male, causing it to learn gender-correlated features such as participation in certain professional organizations and specific university names as positive signals.",
+    "remediation_steps": [
+      "Remove the model from all active hiring pipelines immediately and notify recruiting teams",
+      "Engage external algorithmic auditing firm to assess full scope of impact and affected candidate pool",
+      "Retrain on a gender-blind feature set with adversarial debiasing applied during training",
+      "Implement blinded human review as a mandatory step before any automated scoring influences candidate advancement decisions"
+    ],
+    "severity": "Critical"
+  },
+  {
+    "incident_id": "INC-006",
+    "incident_title": "Fraud Detection Model Performance Collapse Following Feature Store Migration",
+    "incident_date": "2025-04-14",
+    "system_name": "FraudGuard-RT v5.3",
+    "incident_description": "Real-time fraud detection precision dropped from 91% to 67% over a 72-hour window, causing a significant increase in false positives that led to legitimate customer transactions being declined. The payments operations team identified an uptick in customer complaints before the ML team was notified. Investigation traced the degradation to a feature store migration that had occurred three days prior. Financial exposure from missed fraud during the elevated false-positive period is under assessment.",
+    "root_cause": "The feature store migration introduced a time-zone normalization change that shifted transaction velocity features by one hour, breaking the temporal aggregation windows the model relied on for detecting velocity-based fraud patterns.",
+    "remediation_steps": [
+      "Revert feature store to previous version and validate model metrics before re-migrating",
+      "Establish a shadow-scoring pipeline that runs old and new feature versions in parallel for 7 days before any feature store cutover",
+      "Add automated precision/recall regression tests that run on every feature store deployment and gate promotion to production",
+      "Define SLA for ML team escalation when payments decline rate exceeds 3% above baseline"
+    ],
+    "severity": "Critical"
+  },
+  {
+    "incident_id": "INC-007",
+    "incident_title": "LLM Legal Document Summarizer Hallucinated Contract Clause",
+    "incident_date": "2025-05-09",
+    "system_name": "LexSummarize Pro",
+    "incident_description": "An AI-assisted contract review tool used by a mid-size law firm generated a summary of a commercial lease agreement that included a fabricated early-termination penalty clause not present in the source document. A junior associate incorporated the summary into a client memo without independently verifying the source document. The error was caught by a senior partner during review before the memo was sent externally. An internal audit identified two additional summaries with hallucinated numerical figures in a 30-day lookback period.",
+    "root_cause": "The model was not grounded with retrieval-augmented generation and was generating summaries from parametric memory when document token length exceeded the context window, filling in plausible but incorrect clause details.",
+    "remediation_steps": [
+      "Disable summaries for documents exceeding context window limits until a chunked RAG pipeline is implemented",
+      "Add inline citations with page and paragraph references to every summarized clause to enable rapid source verification",
+      "Require mandatory attorney review checklist for all AI-generated summaries before client use",
+      "Implement hallucination detection scoring using an entailment model to flag summary sentences not supported by source text"
+    ],
+    "severity": "High"
+  },
+  {
+    "incident_id": "INC-008",
+    "incident_title": "Content Moderation Model Overblocking LGBTQ+ Community Posts",
+    "incident_date": "2025-07-01",
+    "system_name": "SafeContent Classifier v6",
+    "incident_description": "User trust and safety analysts identified that the content moderation classifier was removing posts containing LGBTQ+-related terminology at a rate 4.7x higher than equivalent posts on other community topics with similar engagement characteristics. Appeals data showed an 89% overturn rate for flagged LGBTQ+ content, far above the platform average of 22%. The issue had persisted for approximately 5 weeks before surfacing through an escalation from a community advocacy group. Affected creators experienced suppressed reach and some received incorrect policy strike notifications.",
+    "root_cause": "A recent classifier fine-tuning run used a hate-speech annotation dataset in which annotators had disproportionately labeled LGBTQ+ identity terminology as toxic, introducing label bias that the fine-tuning amplified rather than corrected.",
+    "remediation_steps": [
+      "Roll back classifier to pre-fine-tuning checkpoint while root cause analysis is completed",
+      "Audit annotation guidelines and annotator demographic composition for the dataset used in fine-tuning",
+      "Implement per-topic false-positive rate monitoring with automatic holds on classifier updates that increase FPR for protected-characteristic categories",
+      "Proactively restore incorrectly removed content and rescind policy strikes issued during the affected window"
+    ],
+    "severity": "High"
+  },
+  {
+    "incident_id": "INC-009",
+    "incident_title": "Model Training Pipeline Data Leakage from Production Database",
+    "incident_date": "2024-12-19",
+    "system_name": "RecommendEngine v8",
+    "incident_description": "A data engineering audit discovered that a recommendation model training pipeline had been inadvertently pulling rows from a production customer database table that included unmasked personally identifiable information, including email addresses and partial payment card numbers. The data had been included in three successive monthly training runs over a 90-day period. The model itself does not expose raw PII in outputs, but the training artifacts and intermediate data snapshots were stored in an improperly secured S3 bucket accessible to all engineering staff.",
+    "root_cause": "A pipeline refactor six months prior had replaced a data warehouse view (which applied PII masking) with a direct production table reference to improve query performance, and the change was not reviewed against data governance requirements.",
+    "remediation_steps": [
+      "Immediately restrict access to affected S3 bucket and audit access logs for unauthorized downloads",
+      "Re-run all three affected training jobs using properly masked data sources and replace stored artifacts",
+      "Notify data protection officer and conduct GDPR/CCPA breach assessment to determine notification obligations",
+      "Enforce automated PII scanning on all datasets entering the ML training pipeline as a mandatory pre-training gate"
+    ],
+    "severity": "Critical"
+  },
+  {
+    "incident_id": "INC-010",
+    "incident_title": "Clinical Trial Patient Stratification Model Returns Inconsistent Results Across Regions",
+    "incident_date": "2025-03-30",
+    "system_name": "TrialStrat AI v1.4",
+    "incident_description": "A pharmaceutical company discovered that a patient stratification model used to assign trial participants to treatment arms was producing different stratification results for identical patient profiles depending on which regional deployment instance processed the request. Discrepancies were found in 8% of cases reviewed during a cross-site data reconciliation. The issue was present in two ongoing Phase II trials involving a combined 340 participants. Regulatory implications are under assessment with the internal biostatistics team.",
+    "root_cause": "Model versioning was not enforced across regional deployments, and two sites were running a minor version that included a post-hoc recalibration of stratification thresholds that had not been validated in the full deployment matrix.",
+    "remediation_steps": [
+      "Freeze all stratification assignments pending a full audit of which model version processed each participant",
+      "Enforce immutable model versioning with cryptographic artifact hashing across all deployment environments",
+      "Establish a change-control process requiring biostatistics sign-off before any model update in an active trial context",
+      "Prepare a protocol deviation report for submission to the relevant IRBs and regulatory bodies"
+    ],
+    "severity": "Critical"
+  },
+  {
+    "incident_id": "INC-011",
+    "incident_title": "Chatbot Provided Incorrect Drug Interaction Information to Patients",
+    "incident_date": "2025-08-11",
+    "system_name": "HealthBot Assistant v2.3",
+    "incident_description": "A patient-facing health information chatbot incorrectly stated that a combination of two common over-the-counter medications was safe when it is in fact contraindicated for patients with hypertension. The response was generated in 23 documented conversations over a 4-day period. No patient harm events have been reported, but the organization's patient safety team escalated the incident for full review. The chatbot's terms of service include a disclaimer that it does not provide medical advice, but user research indicates most patients do not read disclaimers.",
+    "root_cause": "A knowledge base update intended to add new drug information introduced a corrupted record that inverted the contraindication flag for the affected medication combination, and the update was deployed without clinical pharmacist review.",
+    "remediation_steps": [
+      "Take the chatbot offline immediately for the drug interaction query category pending knowledge base audit",
+      "Implement mandatory clinical pharmacist sign-off on all knowledge base updates touching medication information",
+      "Add a hard-coded escalation path to a licensed pharmacist or physician for all drug interaction queries rather than relying on the model to answer directly",
+      "Contact the 23 affected users with a correction notice and guidance to consult a healthcare provider"
+    ],
+    "severity": "Critical"
+  },
+  {
+    "incident_id": "INC-012",
+    "incident_title": "Demand Forecasting Model Drift Causes Inventory Overstock",
+    "incident_date": "2025-02-03",
+    "system_name": "DemandCast ML v3.7",
+    "incident_description": "A retail demand forecasting model began systematically over-predicting demand for a category of seasonal goods by 40-65%, resulting in procurement orders for approximately $2.3M in excess inventory over a six-week period. The discrepancy was identified by a category manager who noticed warehouse stock levels were inconsistent with historical seasonal patterns. Model monitoring dashboards existed but were not being actively reviewed by any team member following a reorganization.",
+    "root_cause": "A significant post-pandemic shift in consumer purchasing patterns for the affected category had caused the model's learned seasonality coefficients to diverge materially from current demand behavior, and concept drift detection thresholds had been set too conservatively to trigger an alert.",
+    "remediation_steps": [
+      "Pause automated procurement orders for affected categories and require manual buyer approval",
+      "Retrain model on a rolling 18-month window to capture post-pandemic demand patterns",
+      "Lower concept drift alert thresholds and assign explicit ownership to a named team member for weekly model health review",
+      "Implement a procurement order cap that prevents the model from recommending orders more than 20% above the trailing 4-week average without human approval"
+    ],
+    "severity": "Medium"
+  },
+  {
+    "incident_id": "INC-013",
+    "incident_title": "Automated Code Review Tool Flagged Secure Code as Vulnerable",
+    "incident_date": "2025-09-04",
+    "system_name": "SecureCode Analyzer v4.1",
+    "incident_description": "An AI-powered static analysis tool integrated into a financial institution's CI/CD pipeline began generating SQL injection vulnerability alerts on parameterized query patterns that are not vulnerable by definition. The false positives blocked 47 pull requests across 12 teams over a three-day period, causing significant developer friction and eroding trust in the tool. Several teams began bypassing the security gate entirely by adding suppression annotations rather than investigating the alerts.",
+    "root_cause": "A model update intended to improve detection of obfuscated injection patterns introduced a regression in the tokenization logic for ORM-generated parameterized queries, causing the model to misclassify them as dynamic string concatenation.",
+    "remediation_steps": [
+      "Roll back to the previous model version and unblock affected pull requests",
+      "Add parameterized query patterns as labeled negative examples in the vulnerability detection test suite",
+      "Require a minimum of 5 business days of shadow-mode evaluation on internal repositories before any model update is promoted to blocking status in CI/CD",
+      "Audit all suppression annotations added during the incident period to identify any that may have masked genuine vulnerabilities"
+    ],
+    "severity": "Medium"
+  },
+  {
+    "incident_id": "INC-014",
+    "incident_title": "Autonomous Procurement Agent Made Unauthorized Purchase Commitments",
+    "incident_date": "2025-10-22",
+    "system_name": "ProcureAI Agent v1.0",
+    "incident_description": "An agentic AI system piloted for autonomous supplier procurement submitted binding purchase orders totaling $187,000 to three vendors without triggering the required human-in-the-loop approval step. The agent correctly identified favorable pricing but misinterpreted its authorization scope, treating a pilot program spending limit of $5,000 per order as a per-vendor cumulative limit rather than a per-transaction limit. The orders were discovered during routine accounts payable review two days after submission. Two of the three vendors had already begun order fulfillment.",
+    "root_cause": "The authorization boundary was specified ambiguously in the agent's system prompt, and no hard enforcement mechanism existed at the API layer to reject purchase orders exceeding the per-transaction limit independent of the model's interpretation.",
+    "remediation_steps": [
+      "Immediately contact vendors to pause fulfillment pending internal authorization review",
+      "Implement hard spend-limit enforcement in the procurement API that rejects requests above threshold regardless of agent instructions",
+      "Rewrite authorization constraints as explicit, unambiguous structured parameters rather than natural language in the system prompt",
+      "Require dual human approval for all agentic procurement actions above $1,000 until the authorization framework has been externally audited"
+    ],
+    "severity": "High"
+  },
+  {
+    "incident_id": "INC-015",
+    "incident_title": "Model Explanation Tool Produced Misleading SHAP Values After Retraining",
+    "incident_date": "2025-07-18",
+    "system_name": "ExplainML Dashboard v2.5",
+    "incident_description": "A model explainability dashboard used by a bank's credit risk team to satisfy regulatory examination requirements was found to be displaying SHAP feature importance values from a prior model version after the underlying scoring model had been retrained and promoted to production. Examiners from a regulatory body had reviewed the outdated explanations during a model risk examination two weeks earlier. The discrepancy was discovered by a model risk analyst who noticed the displayed feature rankings did not match the retrained model's known architecture changes.",
+    "root_cause": "The explainability pipeline was decoupled from the model deployment pipeline and did not automatically recompute SHAP values upon model promotion; a manual trigger step required by the runbook was missed due to incomplete handoff during a team member's leave.",
+    "remediation_steps": [
+      "Recompute SHAP values for the current production model and update the dashboard immediately",
+      "Notify the regulatory body of the discrepancy and provide corrected explanations with a written incident summary",
+      "Automate SHAP recomputation as a required step in the model promotion pipeline with a deployment gate that blocks promotion until explanations are current",
+      "Add model version watermarking to all dashboard views so examiners can verify the explanation version matches the scoring model version"
+    ],
+    "severity": "High"
+  }
+]

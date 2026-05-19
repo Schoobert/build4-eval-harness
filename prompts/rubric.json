@@ -1,0 +1,42 @@
+{
+  "rubric_name": "AI Incident Response Summary Evaluation Rubric",
+  "rubric_version": "1.0",
+  "target_audience": "AI Governance Committee",
+  "criteria": [
+    {
+      "criterion_id": "C1",
+      "criterion_name": "Key Facts Accurate",
+      "description": "The summary correctly reflects the incident facts as recorded, including system name, dates, scope of impact, and the nature of the failure. No material details are omitted, exaggerated, or contradicted.",
+      "passing_standard": "All verifiable facts in the summary match the source incident record. Quantitative details (e.g., affected users, financial exposure, duration) are stated correctly or appropriately qualified when approximate.",
+      "failing_standard": "The summary contains at least one factual error, misattributes the incident to the wrong system or date, overstates or understates the scope of impact, or omits a material fact that would change the committee's understanding of the incident."
+    },
+    {
+      "criterion_id": "C2",
+      "criterion_name": "Root Cause Identified",
+      "description": "The summary clearly articulates the underlying cause of the incident, not merely its symptoms or surface-level manifestations. The explanation is specific enough to be actionable.",
+      "passing_standard": "The root cause is stated explicitly and traces the failure to its origin (e.g., a specific process gap, technical defect, or governance failure) rather than describing only what went wrong at the symptom level.",
+      "failing_standard": "The summary omits the root cause entirely, restates only the symptoms without explanation, attributes causation vaguely (e.g., 'human error' without further specificity), or introduces a cause not supported by the incident record."
+    },
+    {
+      "criterion_id": "C3",
+      "criterion_name": "Remediation Steps Present",
+      "description": "The summary includes concrete, specific actions taken or recommended to resolve the incident and prevent recurrence. Steps should be attributable and time-bound where the source data supports it.",
+      "passing_standard": "At least two distinct remediation actions are described with sufficient specificity for a committee member to assess progress or assign accountability. At least one step addresses prevention of recurrence, not only immediate containment.",
+      "failing_standard": "Remediation steps are absent, stated only in generic terms (e.g., 'improve processes'), limited to immediate containment with no recurrence prevention, or include actions not referenced in the source incident record."
+    },
+    {
+      "criterion_id": "C4",
+      "criterion_name": "Appropriate Tone",
+      "description": "The summary uses professional, measured language calibrated for a governance committee audience. It conveys appropriate urgency without sensationalism and maintains factual neutrality without minimizing serious issues.",
+      "passing_standard": "The language is formal, precise, and free of jargon unexplained to a non-technical audience. Severity is communicated proportionately to the incident rating. The summary does not editorialize, assign blame to individuals, or use charged language.",
+      "failing_standard": "The summary uses casual, alarmist, or dismissive language; employs unexplained technical jargon that would impede committee comprehension; assigns personal blame to named individuals; or frames the incident in a way that is inconsistent with its documented severity level."
+    },
+    {
+      "criterion_id": "C5",
+      "criterion_name": "No Speculation",
+      "description": "The summary confines itself to what is stated or directly supported by the incident record. It does not introduce inferences, hypothetical harms, or causal claims that go beyond the documented facts.",
+      "passing_standard": "Every claim in the summary can be traced to the source incident record. Where uncertainty exists in the source data, the summary reflects that uncertainty explicitly (e.g., 'under assessment', 'reported by') rather than asserting conclusions not yet established.",
+      "failing_standard": "The summary asserts undocumented harms, assigns motives, introduces causal explanations not present in the incident record, or presents tentative findings as confirmed conclusions without qualification."
+    }
+  ]
+}
