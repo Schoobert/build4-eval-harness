@@ -1,0 +1,654 @@
+{
+  "prompt_version": "v3",
+  "timestamp": "2026-05-20T22:08:11.666449+00:00",
+  "incidents_compared": 15,
+  "total_comparisons": 75,
+  "overall_agreement_rate": 1.0,
+  "total_agreements": 75,
+  "total_human_pass_judge_fail": 0,
+  "total_human_fail_judge_pass": 0,
+  "per_criterion": {
+    "C1": {
+      "criterion_name": "Key Facts Accurate",
+      "agreement_rate": 1.0,
+      "agreements": 15,
+      "human_pass_judge_fail": 0,
+      "human_fail_judge_pass": 0,
+      "total": 15
+    },
+    "C2": {
+      "criterion_name": "Root Cause Identified",
+      "agreement_rate": 1.0,
+      "agreements": 15,
+      "human_pass_judge_fail": 0,
+      "human_fail_judge_pass": 0,
+      "total": 15
+    },
+    "C3": {
+      "criterion_name": "Remediation Steps Present",
+      "agreement_rate": 1.0,
+      "agreements": 15,
+      "human_pass_judge_fail": 0,
+      "human_fail_judge_pass": 0,
+      "total": 15
+    },
+    "C4": {
+      "criterion_name": "Appropriate Tone",
+      "agreement_rate": 1.0,
+      "agreements": 15,
+      "human_pass_judge_fail": 0,
+      "human_fail_judge_pass": 0,
+      "total": 15
+    },
+    "C5": {
+      "criterion_name": "No Speculation",
+      "agreement_rate": 1.0,
+      "agreements": 15,
+      "human_pass_judge_fail": 0,
+      "human_fail_judge_pass": 0,
+      "total": 15
+    }
+  },
+  "per_incident": [
+    {
+      "incident_id": "INC-001",
+      "criteria": {
+        "C1": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C2": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C3": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C4": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C5": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        }
+      }
+    },
+    {
+      "incident_id": "INC-002",
+      "criteria": {
+        "C1": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C2": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C3": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C4": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C5": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        }
+      }
+    },
+    {
+      "incident_id": "INC-003",
+      "criteria": {
+        "C1": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C2": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C3": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C4": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C5": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        }
+      }
+    },
+    {
+      "incident_id": "INC-004",
+      "criteria": {
+        "C1": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C2": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C3": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C4": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C5": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        }
+      }
+    },
+    {
+      "incident_id": "INC-005",
+      "criteria": {
+        "C1": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C2": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C3": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C4": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C5": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        }
+      }
+    },
+    {
+      "incident_id": "INC-006",
+      "criteria": {
+        "C1": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C2": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C3": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C4": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C5": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        }
+      }
+    },
+    {
+      "incident_id": "INC-007",
+      "criteria": {
+        "C1": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C2": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C3": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C4": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C5": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        }
+      }
+    },
+    {
+      "incident_id": "INC-008",
+      "criteria": {
+        "C1": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C2": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C3": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C4": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C5": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        }
+      }
+    },
+    {
+      "incident_id": "INC-009",
+      "criteria": {
+        "C1": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C2": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C3": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C4": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C5": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        }
+      }
+    },
+    {
+      "incident_id": "INC-010",
+      "criteria": {
+        "C1": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C2": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C3": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C4": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C5": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        }
+      }
+    },
+    {
+      "incident_id": "INC-011",
+      "criteria": {
+        "C1": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C2": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C3": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C4": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C5": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        }
+      }
+    },
+    {
+      "incident_id": "INC-012",
+      "criteria": {
+        "C1": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C2": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C3": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C4": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C5": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        }
+      }
+    },
+    {
+      "incident_id": "INC-013",
+      "criteria": {
+        "C1": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C2": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C3": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C4": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C5": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        }
+      }
+    },
+    {
+      "incident_id": "INC-014",
+      "criteria": {
+        "C1": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C2": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C3": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C4": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C5": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        }
+      }
+    },
+    {
+      "incident_id": "INC-015",
+      "criteria": {
+        "C1": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C2": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C3": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C4": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        },
+        "C5": {
+          "human": "pass",
+          "judge": "pass",
+          "agree": true,
+          "human_pass_judge_fail": false,
+          "human_fail_judge_pass": false
+        }
+      }
+    }
+  ]
+}
