@@ -345,15 +345,11 @@ v2 added an explicit instruction: *do not introduce consequences, risks, or
 harms beyond what the incident record states*. This eliminated the speculation
 failures and raised pass rates on C4 and C5 sharply.
 
-**v2 → v3: Tone calibration for AI system failures**
+**v2 → v3: Tone calibration for AI failure descriptions**
 
-A residual v2 failure mode was dramatic framing when describing AI system
-malfunctions — language like "alarming," "caused chaos," or "critical failure"
-that overstated severity relative to the documented incident rating. v3 added a
-tone calibration note reminding the model that High severity incidents, while
-serious, do not warrant alarming language, and that the audience (a governance
-committee) expects measured, factual prose. This brought the remaining C4 and
-C5 failures to zero.
+One incident (INC-007, a legal document hallucination case) failed C4 in v2. The judge flagged casual vocabulary in the root cause explanation — phrases like 'made things up' and 'guessed at' when describing the AI system's hallucination behavior. The underlying tension: the prompt instructed plain language at an 8th grade reading level, but governance committee summaries require precise technical language even when explaining complex AI failures to non-technical audiences.
+
+v3 added an explicit rule: when describing how an AI system failed, use precise technical language rather than informal phrasing. For example, 'the system generated outputs not grounded in the source document' rather than 'the system made things up.' This resolved the INC-007 failure and brought C4 to 100%.
         """
     )
 
@@ -367,7 +363,7 @@ def page_calibration():
 
     st.markdown(
         """
-After the AI judge scored all 15 incidents, Derek went through each one manually and scored them using the same rubric — 5 criteria per incident, pass or fail, for a total of 75 individual judgements.
+After the AI judge scored all 15 incidents, I went through each one manually and scored them using the same rubric — 5 criteria per incident, pass or fail, for a total of 75 individual judgements.
 
 **Calibration** is the process of comparing those human scores to the AI judge scores. It answers a simple but important question: does the AI judge agree with a human who knows what good looks like?
 
@@ -412,34 +408,6 @@ The metrics below show the results.
         row_cols[3].markdown(str(c.get("human_fail_judge_pass", 0)))
 
     st.divider()
-
-    st.subheader("What is calibration and why does it matter?")
-    st.markdown(
-        """
-**Calibration** measures how closely an automated evaluator (the LLM judge)
-agrees with a human reviewer on the same set of judgements. High agreement
-means the judge is a reliable proxy for human opinion; systematic disagreement
-points to rubric gaps or judge bias that need to be corrected before results
-can be trusted.
-
-For a governance committee, calibration answers the question: *"Can we trust
-the scores the AI judge is giving us?"* If the judge is systematically stricter
-or more lenient than a human expert would be, the pass rates reported by the
-harness will be misleading.
-
-**A note on interpreting these results**
-
-The v3 summaries are high quality — the prompt was refined specifically to
-eliminate the failure modes seen in v1 and v2. As a result, both the human
-reviewer and the LLM judge agreed that all 75 criterion scores (15 incidents ×
-5 criteria) were passing. 100% agreement is a strong signal, but it also means
-there were no disagreements to probe. Calibration is most diagnostic when the
-judge and human diverge; a future exercise with more varied summary quality, or
-a deliberately flawed prompt, would provide a richer test of judge reliability.
-The current results establish a useful baseline: when both rater types see
-high-quality output, they agree completely.
-        """
-    )
 
 
 # ---------------------------------------------------------------------------
@@ -496,8 +464,8 @@ Browsing these shows the range of situations the evaluation harness was designed
     st.write(inc["root_cause"])
 
     st.subheader("Remediation Steps")
-    for i, step in enumerate(inc["remediation_steps"], 1):
-        st.markdown(f"{i}. {step}")
+    steps = inc["remediation_steps"]
+    st.write("\n".join(f"{i}. {step}" for i, step in enumerate(steps, 1)))
 
 
 # ---------------------------------------------------------------------------
