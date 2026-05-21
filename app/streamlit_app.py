@@ -88,70 +88,137 @@ def colored_rate(rate: float) -> str:
 # ---------------------------------------------------------------------------
 
 def page_run_evaluation():
-    st.header("Run Evaluation")
-
+    st.title("AI Incident Report Checker")
+    st.subheader("What's this for?")
     st.markdown(
         """
-This page runs the full evaluation pipeline — live, using the Claude API.
+AI teams ship systems that make consequential decisions — loan approvals, content removals, medical recommendations. When something goes wrong, someone often has to investigate what happened, write it up, and present it to leadership. While AI can help compile this information, it is essential that these summaries are accurate, grounded, and free of speculation.
 
-Here's what happens step by step:
-
-1. **You pick an incident.** An "incident" is one of 15 fictional AI system failures used as test cases — things like a loan model that discriminated against certain applicants, or a medical AI that broke after a software update.
-
-2. **You pick a prompt version.** The AI that writes the summary was given different written instructions in v1, v2, and v3. Each version was an attempt to fix problems found in the previous one. v3 is the best-performing version.
-
-3. **You click the button.** Two things happen automatically:
-   - A first Claude API call writes a plain-language summary of the incident, as if for a governance committee.
-   - A second Claude API call reads that summary and scores it against a 5-criterion rubric — pass or fail on each one, with a written justification.
-
-This second step is called **LLM-as-judge**: using a language model to evaluate the output of another language model against a defined standard.
+I built this tool to evaluate whether AI-generated incident summaries meet that standard automatically, using a defined rubric, in seconds. It's designed for Trust & Safety leads, AI governance teams, and compliance operators who need to know if their AI's outputs can be trusted before they reach a decision-maker.
         """
     )
     st.divider()
+    st.markdown("To see how the tool evaluates AI-generated incident summaries, select a sample incident below and click **Generate & Score Summary** — or select **Evaluate my own incident** and fill in the fields with your own incident details.")
 
-    incidents = load_incidents()
-    incident_options = {
-        f"{inc['incident_id']} — {inc['incident_title']}": inc["incident_id"]
-        for inc in incidents
-    }
-
-    # "Try this example" defaults
-    DEFAULT_INCIDENT = "INC-001 — Loan Approval Model Disparate Impact on Hispanic Applicants"
-    DEFAULT_VERSION = "v3"
-
-    st.info(
-        "**Try this example:** INC-001 with prompt v3 — "
-        "a Critical severity fairness incident that showcases the full pipeline.",
-        icon="💡",
+    mode = st.radio(
+        "Incident source",
+        options=["Use a sample incident", "Evaluate my own incident"],
+        horizontal=True,
+        label_visibility="collapsed",
     )
 
-    col1, col2 = st.columns([3, 1])
-    with col1:
+    if mode == "Use a sample incident":
+        incidents = load_incidents()
+        incident_options = {
+            f"{inc['incident_id']} — {inc['incident_title']}": inc["incident_id"]
+            for inc in incidents
+        }
+
+        DEFAULT_INCIDENT = "INC-001 — Loan Approval Model Disparate Impact on Hispanic Applicants"
+        prompt_version = "v3"
+
+        st.info(
+            "**Try this example:** INC-001 with prompt v3 — "
+            "a Critical severity fairness incident that showcases the full pipeline.",
+            icon="💡",
+        )
+
         selected_label = st.selectbox(
             "Incident",
             options=list(incident_options.keys()),
             index=list(incident_options.keys()).index(DEFAULT_INCIDENT),
         )
-    with col2:
-        prompt_version = st.selectbox(
-            "Prompt version",
-            options=["v1", "v2", "v3"],
-            index=["v1", "v2", "v3"].index(DEFAULT_VERSION),
+
+        incident_id = incident_options[selected_label]
+
+        if st.button("Generate & Score Summary", type="primary"):
+            from eval_harness import run_evaluation
+
+            with st.spinner("Calling Claude to generate summary and score rubric…"):
+                result = run_evaluation(incident_id, prompt_version=prompt_version)
+
+            st.session_state["last_result"] = result
+
+        result = st.session_state.get("last_result")
+        if result and result["incident_id"] == incident_id:
+            _render_result(result)
+
+    else:  # "Evaluate my own incident"
+        st.subheader("Enter your incident details")
+        st.markdown(
+            "Fill in the fields below. You do not need to use any specific format — "
+            "write in plain language. The more detail you provide, the more accurate "
+            "the evaluation will be."
         )
 
-    incident_id = incident_options[selected_label]
+        custom_title = st.text_input("Incident Title")
+        custom_system = st.text_input("System Name — the AI system involved")
+        custom_severity = st.selectbox("Severity", options=["Critical", "High", "Medium", "Low"])
+        custom_description = st.text_area("What happened — describe the incident", height=150)
+        custom_root_cause = st.text_area("Root cause — what caused it", height=100)
+        custom_remediation = st.text_area(
+            "Remediation steps — what was done or recommended", height=100
+        )
 
-    if st.button("Generate & Score Summary", type="primary"):
-        from eval_harness import run_evaluation
+        prompt_version = "v3"
 
-        with st.spinner("Calling Claude to generate summary and score rubric…"):
-            result = run_evaluation(incident_id, prompt_version=prompt_version)
+        if st.button("Generate & Score Summary", type="primary"):
+            missing = []
+            if not custom_title.strip():
+                missing.append("Incident Title")
+            if not custom_system.strip():
+                missing.append("System Name")
+            if not custom_description.strip():
+                missing.append("What happened")
+            if not custom_root_cause.strip():
+                missing.append("Root cause")
 
-        st.session_state["last_result"] = result
+            if missing:
+                st.warning(
+                    f"Please fill in the following required fields: {', '.join(missing)}"
+                )
+            else:
+                from eval_harness import (
+                    generate_summary,
+                    judge_summary,
+                    load_rubric,
+                    load_subject_prompt,
+                )
+                import anthropic
+                from datetime import datetime, timezone
 
-    result = st.session_state.get("last_result")
-    if result and result["incident_id"] == incident_id:
-        _render_result(result)
+                incident = {
+                    "incident_id": "custom",
+                    "incident_title": custom_title.strip(),
+                    "system_name": custom_system.strip(),
+                    "severity": custom_severity,
+                    "incident_description": custom_description.strip(),
+                    "root_cause": custom_root_cause.strip(),
+                    "remediation_steps": [
+                        s.strip() for s in custom_remediation.splitlines() if s.strip()
+                    ],
+                }
+
+                with st.spinner("Calling Claude to generate summary and score rubric…"):
+                    client = anthropic.Anthropic()
+                    system_prompt = load_subject_prompt(prompt_version)
+                    generated_summary = generate_summary(client, incident, system_prompt)
+                    rubric = load_rubric()
+                    scores = judge_summary(client, incident, generated_summary, rubric)
+                    overall_pass = all(v["result"] == "pass" for v in scores.values())
+
+                st.session_state["last_result"] = {
+                    "incident_id": "custom",
+                    "prompt_version": prompt_version,
+                    "generated_summary": generated_summary,
+                    "scores": scores,
+                    "overall_pass": overall_pass,
+                    "timestamp": datetime.now(timezone.utc).isoformat(),
+                }
+
+        result = st.session_state.get("last_result")
+        if result and result["incident_id"] == "custom":
+            _render_result(result)
 
 
 def _render_result(result: dict):
@@ -446,20 +513,7 @@ def main():
 
     with st.sidebar:
         st.title("AI Eval Harness")
-        st.markdown("**About this project**")
-        st.markdown(
-            "Derek built this to show what AI evaluation engineering looks like "
-            "in practice — specifically for governance and Trust & Safety roles.\n\n"
-            "The core idea: a non-technical policy operator can define what "
-            "\"good\" looks like for an AI system (a rubric), and then use a "
-            "second AI to automatically check whether the first one is meeting "
-            "that standard. This tool makes that loop visible and measurable.\n\n"
-            "The four pages each show a different part of the build:\n"
-            "- **Run Evaluation** — watch the full pipeline run live\n"
-            "- **Prompt Comparison** — see how rewriting the instructions improved results\n"
-            "- **Calibration** — check whether the AI judge agrees with a human reviewer\n"
-            "- **Incident Library** — browse the 15 test cases used throughout"
-        )
+        st.caption("Built by Derek Pignatelli · Portfolio project")
         st.divider()
         page = st.radio(
             "Navigate",
@@ -471,7 +525,6 @@ def main():
             ],
             label_visibility="collapsed",
         )
-        st.divider()
         st.caption("Powered by Claude · Anthropic")
 
     if page == "Run Evaluation":
