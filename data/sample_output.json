@@ -1,0 +1,29 @@
+{
+  "incident_id": "INC-001",
+  "prompt_version": "v3",
+  "generated_summary": "**Incident Overview**\n\nOn March 12, 2025, a fairness audit found that the CreditScore-ML v4.2 loan approval system was denying applications from Hispanic applicants at a rate 23% higher than non-Hispanic applicants who had similar credit qualifications. The system had been in use for 11 months without a fairness review. Applicants who were denied did not know an automated system made the decision and had no way to appeal. This incident is rated **Critical** severity.\n\n**Root Cause**\n\nThe system was trained on 15 years of historical loan data that reflected past discriminatory lending practices. Features such as zip code and employment sector acted as proxies for race, causing the system to reproduce those discriminatory patterns. No disparate impact testing—analysis to detect whether a system treats protected groups unfairly—was conducted before the system went live.\n\n**Remediation Steps**\n\n1. Suspend the model immediately and route all new loan decisions to human underwriters.\n2. Review all loan decisions made during the 11-month period to identify affected applicants and measure the full scope of disparate impact.\n3. Retrain the model using a reweighted dataset with zip code and employment sector features either removed or constrained to ensure fairness.\n4. Require quarterly fairness audits using demographic parity metrics (equal approval rates across groups) and equalized odds metrics (equal true positive and false positive rates) before any future model deployment.",
+  "scores": {
+    "C1": {
+      "result": "pass",
+      "justification": "All verifiable facts match the source record: system name (CreditScore-ML v4.2), date (March 12, 2025), 23% disparity rate, 11-month duration, Critical severity, and all key details about the discovery, impact, and affected population are accurate."
+    },
+    "C2": {
+      "result": "pass",
+      "justification": "The root cause is explicitly stated as training data sourced from 15 years of historical discriminatory lending practices with zip code and employment sector serving as racial proxies, plus the absence of disparate impact testing before deployment."
+    },
+    "C3": {
+      "result": "pass",
+      "justification": "All four remediation steps from the source are included with sufficient specificity: immediate suspension, retrospective review of 11 months of decisions, model retraining with feature modifications, and mandatory quarterly fairness audits with defined metrics."
+    },
+    "C4": {
+      "result": "pass",
+      "justification": "The summary uses professional, measured language appropriate for governance committee review, explains technical terms (disparate impact, demographic parity, equalized odds) in accessible language, conveys Critical severity proportionately, and avoids assigning personal blame or sensationalism."
+    },
+    "C5": {
+      "result": "pass",
+      "justification": "Every claim in the summary is directly traceable to the incident record with no speculation about motives, undocumented harms, or causal explanations beyond what is stated in the source material."
+    }
+  },
+  "overall_pass": true,
+  "timestamp": "2026-05-20T21:31:42.511465+00:00"
+}
