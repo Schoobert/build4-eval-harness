@@ -2,7 +2,9 @@
 
 # AI Incident Report Checker
 
-**[Live App](https://build4-eval-harness.streamlit.app/)** · **[Loom Walkthrough](#)** *(placeholder — update after recording)*
+**[Live App](https://build4-eval-harness.streamlit.app/)** · **[Loom Walkthrough](https://www.loom.com/share/08799b841b224fd8a30ecf0a76faca7d)**
+
+![Landing page - Sample incident or custom incident can be submitted for evaluation](images/screenshot1.png)
 
 ---
 
@@ -75,7 +77,7 @@ This is a demo-grade implementation. For production use, the following would be 
 
 - **Language:** Python 3.14
 - **Framework:** Streamlit
-- **Model:** claude-sonnet-4-5 (Anthropic)
+- **Model:** claude-sonnet-4-6 (Anthropic)
 - **Eval architecture:** Two-call LLM-as-judge pipeline
 - **Test data:** 15 synthetic AI incident reports across 5 failure categories
 - **Rubric:** 5-criterion pass/fail binary scoring
