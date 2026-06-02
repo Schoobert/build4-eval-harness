@@ -4,7 +4,7 @@
 
 **[Live App](https://build4-eval-harness.streamlit.app/)** · **[Loom Walkthrough](https://www.loom.com/share/08799b841b224fd8a30ecf0a76faca7d)**
 
-![Landing page - Sample incident or custom incident can be submitted for evaluation](images/screenshot1.png)
+![Landing page - Sample incident or custom incident can be submitted for evaluation](https://raw.githubusercontent.com/Schoobert/build4-eval-harness/main/images/screenshot1.png)
 
 ---
 
