@@ -1,5 +1,3 @@
----
-
 # AI Incident Report Checker
 
 **[Live App](https://build4-eval-harness.streamlit.app/)** · **[Loom Walkthrough](https://www.loom.com/share/08799b841b224fd8a30ecf0a76faca7d)**
